@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "701061779722",
+    "firebase_url": "https://whereiscar-b5ac9.firebaseio.com",
+    "project_id": "whereiscar-b5ac9",
+    "storage_bucket": "whereiscar-b5ac9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701061779722:android:e75fcf38aa6283f7",
+        "android_client_info": {
+          "package_name": "com.example.sergiu.whereiscar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701061779722-autjvrkm7vo93n6uqouclpoc9rtu9ecf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbIDDVbUklM0d6caZ2GinjN4wcH8z8UEo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

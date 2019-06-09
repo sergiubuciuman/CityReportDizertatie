@@ -44,7 +44,7 @@ public class MapsActivity extends AppCompatActivity
         mMap = map;
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
-       // mMap.setOnCameraIdleListener(this);
+        mMap.setOnCameraIdleListener(this);
     }
 
     @Override
@@ -72,6 +72,6 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public void onCameraIdle() {
-        //mCameraTextView.setText(mMap.getCameraPosition().toString());
+        mCameraTextView.setText(mMap.getCameraPosition().toString());
     }
 }

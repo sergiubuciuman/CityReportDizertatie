@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -21,12 +23,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static android.provider.MediaStore.Images.Media.getBitmap;
+
 public class UploadImage extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String UPLOAD_URL = "http://androidpost.ddns.net/Test1/2.php";
+    public static final String UPLOAD_URL = "http://sergio.ddns.net/Test1/2.php";
     public static final String UPLOAD_KEY = "image";
     public static final String Upload_Name = "name";
     public static final String User = "user";
@@ -42,8 +47,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
     private ImageView imageView;
     private EditText ImageName;
     private EditText NameUser;
-
-    private Bitmap bitmap;
+    private Bitmap bitmap, bitmapRotate;
 
     private Uri filePath;
 
@@ -81,13 +85,15 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
 
             filePath = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmap = getBitmap(getContentResolver(), filePath);
+                bitmapRotate = bitmap;
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
     //Here we make image to be compressed in bytes and ecoded in base64.
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -95,6 +101,16 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap) {
+        float degrees = 90;//rotation degree
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degrees);
+        bitmapRotate = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        return bitmapRotate;
+
     }
 
     private void uploadImage() {
@@ -125,7 +141,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
 
                 data.put(UPLOAD_KEY, uploadImage);
                 data.put(Upload_Name, GetImageNameFromEditText);
-                data.put(User,GetNameUser);
+                data.put(User, GetNameUser);
                 String result = rh.sendPostRequest(UPLOAD_URL, data);
 
                 return result;
@@ -133,7 +149,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         }
 
         UploadImage1 ui = new UploadImage1();
-        ui.execute(bitmap);
+        ui.execute(bitmapRotate);
     }
 
     @Override
@@ -149,13 +165,14 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         }
 
         if (v == buttonAddLocation) {
-            finish();
+            finish(); //We need this when we want to add new activity
+            //imageView.setImageBitmap(rotateBitmap(bitmap));
             //starting MapsActivity
             startActivity(new Intent(this, MapsActivity.class));
         }
     }
 
-   /* private void viewImage() {
+    /*private void viewImage() {
         startActivity(new Intent(this, ImageListView.class));
     }*/
 }
